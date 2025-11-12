@@ -217,7 +217,7 @@ export default function ScenariosPage() {
 
   const renderCategoryGrid = () => (
     <>
-      <div className="grid grid-cols-2 gap-4 pb-24">
+      <div className="grid grid-cols-2 gap-3 pb-20">
         {categories.map((category, index) => {
           const categoryData = scenarioData[category as keyof typeof scenarioData]
           return (
@@ -230,10 +230,10 @@ export default function ScenariosPage() {
               }`}
               onClick={() => handleCategorySelect(category, index)}
             >
-              <CardHeader className="text-center p-4">
-                <div className="text-4xl mb-2">{categoryData.icon}</div>
-                <CardTitle className="text-base">{category}</CardTitle>
-                <CardDescription className="text-xs">
+              <CardHeader className="text-center p-3">
+                <div className="text-3xl mb-1">{categoryData.icon}</div>
+                <CardTitle className="text-sm leading-tight">{category}</CardTitle>
+                <CardDescription className="text-xs mt-1">
                   {categoryData.items.length} 個選項
                 </CardDescription>
               </CardHeader>
@@ -243,8 +243,8 @@ export default function ScenariosPage() {
       </div>
 
       {/* 固定在底部的確定按鈕 */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-green-100 p-4 shadow-lg">
-        <div className="container mx-auto px-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-green-100 p-3 shadow-lg">
+        <div className="container mx-auto px-4 max-w-md">
           <Button 
             size="lg"
             onClick={handleCategoryConfirm}
@@ -264,24 +264,21 @@ export default function ScenariosPage() {
     const categoryData = scenarioData[selectedCategory as keyof typeof scenarioData]
     
     return (
-      <div className="space-y-6">
-        {/* 麵包屑和返回按鈕 */}
-        <div className="flex items-center gap-4 mb-8">
+      <>
+        {/* 返回按鈕 */}
+        <div className="mb-4">
           <Button 
             variant="outline" 
             onClick={handleBackClick}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 border-green-200 text-green-700 hover:bg-green-50"
           >
             <ChevronLeft className="w-4 h-4" />
             返回分類
           </Button>
-          <div className="text-sm text-gray-500">
-            分類 {'>'} {selectedCategory}
-          </div>
         </div>
 
         {/* 項目網格 */}
-        <div className="grid grid-cols-2 gap-4 pb-24">
+        <div className="grid grid-cols-2 gap-3 pb-20">
           {categoryData.items.map((item, index) => (
             <Card 
               key={index}
@@ -292,18 +289,18 @@ export default function ScenariosPage() {
               }`}
               onClick={() => handleItemClick(index)}
             >
-              <CardHeader className="text-center p-4">
-                <div className="text-3xl mb-2">{item.icon}</div>
-                <CardTitle className="text-sm">{item.name}</CardTitle>
-                <CardDescription className="text-xs">{item.description}</CardDescription>
+              <CardHeader className="text-center p-3">
+                <div className="text-3xl mb-1">{item.icon}</div>
+                <CardTitle className="text-sm leading-tight">{item.name}</CardTitle>
+                <CardDescription className="text-xs mt-1">{item.description}</CardDescription>
               </CardHeader>
             </Card>
           ))}
         </div>
 
         {/* 固定在底部的確定按鈕 */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-green-100 p-4 shadow-lg">
-          <div className="container mx-auto px-4">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-green-100 p-3 shadow-lg">
+          <div className="container mx-auto px-4 max-w-md">
             <Button 
               size="lg"
               onClick={handleConfirm}
@@ -314,35 +311,29 @@ export default function ScenariosPage() {
             </Button>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 
   return (
-    <div className="min-h-screen bg-white py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-white py-6">
+      <div className="container mx-auto px-4 max-w-md">
         {/* 主標題區域 */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2 leading-tight">
             找出最適合的{' '}
             <span className="bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
               信用卡 / 電子支付
             </span>
           </h1>
-          <p className="text-base text-gray-600 mb-6">
+          <p className="text-sm text-gray-600 leading-relaxed">
             選擇你的消費情境，我們幫你找出最高回饋！
           </p>
-        
         </div>
 
         {/* 主要內容區域 */}
-        <div className="mb-8">
+        <div>
           {selectedCategory ? renderItemGrid() : renderCategoryGrid()}
-        </div>
-
-        {/* 頁尾提醒 */}
-        <div className="text-center text-sm text-gray-500 border-t pt-8">
-          <p>📋 資料僅供參考，實際回饋以銀行公告為準</p>
         </div>
       </div>
     </div>

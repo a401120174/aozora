@@ -54,24 +54,24 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-8">
-      <div className="container mx-auto px-4 max-w-2xl">
+    <div className="min-h-screen bg-white py-6">
+      <div className="container mx-auto px-4 max-w-md">
         {/* 標題區域 */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2 leading-tight">
             我的{' '}
             <span className="bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
               支付方式
             </span>
           </h1>
-          <p className="text-base text-gray-600">
+          <p className="text-sm text-gray-600 leading-relaxed">
             選擇您目前擁有的信用卡與電子支付方式
           </p>
         </div>
 
         {/* 已選擇數量提示 */}
         {selectedPayments.length > 0 && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
             <p className="text-sm text-green-700">
               已選擇 <span className="font-bold">{selectedPayments.length}</span> 個支付方式
             </p>
@@ -79,26 +79,26 @@ export default function PaymentPage() {
         )}
 
         {/* 支付方式列表 */}
-        <div className="space-y-4 mb-24">
+        <div className="space-y-3 pb-20">
           {Object.entries(paymentData).map(([category, items]) => (
             <Card key={category} className="border-green-100">
               <CardHeader 
-                className="cursor-pointer hover:bg-green-50/30 transition-colors"
+                className="cursor-pointer hover:bg-green-50/30 transition-colors p-3"
                 onClick={() => toggleSection(category)}
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="text-2xl">
+                  <div className="flex items-center gap-2">
+                    <div className="text-xl">
                       {category === '電子支付' ? '📱' : '💳'}
                     </div>
                     <div>
-                      <CardTitle className="text-lg">{category}</CardTitle>
-                      <CardDescription className="text-xs">
+                      <CardTitle className="text-base leading-tight">{category}</CardTitle>
+                      <CardDescription className="text-xs mt-0.5">
                         {items.length} 個選項
                         {selectedPayments.filter(id => 
                           items.some(item => item.id === id)
                         ).length > 0 && (
-                          <span className="ml-2 text-green-600 font-medium">
+                          <span className="ml-1 text-green-600 font-medium">
                             · 已選 {selectedPayments.filter(id => 
                               items.some(item => item.id === id)
                             ).length}
@@ -109,16 +109,16 @@ export default function PaymentPage() {
                   </div>
                   <div className="text-green-600">
                     {expandedSections.includes(category) ? (
-                      <ChevronUp className="w-5 h-5" />
+                      <ChevronUp className="w-4 h-4" />
                     ) : (
-                      <ChevronDown className="w-5 h-5" />
+                      <ChevronDown className="w-4 h-4" />
                     )}
                   </div>
                 </div>
               </CardHeader>
 
               {expandedSections.includes(category) && (
-                <CardContent className="pt-0">
+                <CardContent className="pt-0 px-3 pb-3">
                   <div className="space-y-2">
                     {items.map((item) => {
                       const isSelected = selectedPayments.includes(item.id)
@@ -126,28 +126,28 @@ export default function PaymentPage() {
                         <div
                           key={item.id}
                           onClick={() => togglePayment(item.id)}
-                          className={`flex items-center justify-between p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                          className={`flex items-center justify-between p-2 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
                             isSelected
                               ? 'border-green-500 bg-green-50'
                               : 'border-gray-200 hover:border-green-300 hover:bg-green-50/30'
                           }`}
                         >
-                          <div className="flex items-center gap-3">
-                            <div className="text-2xl">{item.icon}</div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-xl">{item.icon}</div>
                             <div>
-                              <div className="text-sm font-medium text-gray-900">
+                              <div className="text-sm font-medium text-gray-900 leading-tight">
                                 {item.name}
                               </div>
                               {'bank' in item && (
-                                <div className="text-xs text-gray-500">
+                                <div className="text-xs text-gray-500 mt-0.5">
                                   {item.bank}
                                 </div>
                               )}
                             </div>
                           </div>
                           {isSelected && (
-                            <div className="w-6 h-6 rounded-full bg-green-600 flex items-center justify-center">
-                              <Check className="w-4 h-4 text-white" />
+                            <div className="w-5 h-5 rounded-full bg-green-600 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-white" />
                             </div>
                           )}
                         </div>
@@ -161,15 +161,15 @@ export default function PaymentPage() {
         </div>
 
         {/* 固定在底部的儲存按鈕 */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-green-100 p-4 shadow-lg">
-          <div className="container mx-auto px-4 max-w-2xl">
-            <div className="flex gap-3">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-green-100 p-3 shadow-lg">
+          <div className="container mx-auto px-4 max-w-md">
+            <div className="flex gap-2">
               <Button 
                 variant="outline"
                 asChild
                 className="flex-1 border-green-200 text-green-700 hover:bg-green-50"
               >
-                <Link href="/">返回首頁</Link>
+                <Link href="/">返回</Link>
               </Button>
               <Button 
                 onClick={handleSave}
@@ -180,11 +180,6 @@ export default function PaymentPage() {
               </Button>
             </div>
           </div>
-        </div>
-
-        {/* 提示說明 */}
-        <div className="text-center text-xs text-gray-500 mt-8 pb-24">
-          <p>💡 選擇您實際擁有的支付方式，我們將為您推薦最適合的優惠</p>
         </div>
       </div>
     </div>
