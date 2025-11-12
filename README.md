@@ -1,108 +1,128 @@
-# Aozora - 輕量 Next.js 專案
+# Aozora 信用卡與電子支付比較平台
 
-一個現代化的輕量級 Next.js 應用程序，使用最新的技術棧構建。
+一個智能的信用卡與電子支付比較平台，幫助使用者根據消費場景找到最適合的回饋方案。
 
-## 🚀 技術棧
+## 功能特色
 
-- **Next.js 14** - React 框架，支援 App Router
-- **TypeScript** - 型別安全的 JavaScript
-- **Tailwind CSS** - 實用性優先的 CSS 框架
-- **Shadcn/ui** - 高質量的可重用元件庫
-- **ESLint + Prettier** - 代碼品質和格式化工具
-- **React 19** - 最新版本的 React
+### 🎯 智能場景選擇
+- **兩層式選擇流程**：先選擇大分類，再選擇具體場景
+- **五大消費分類**：日本旅遊、韓國旅遊、訂閱服務、零售商店、網購平台
+- **直觀的卡片介面**：每個場景都有對應的圖示和描述
 
-## 📦 開始使用
+### 💳 個人化推薦
+- 根據選擇的消費場景智能推薦最適合的信用卡和電子支付
+- 顯示實際回饋率和特色功能
+- 提供用戶評分和詳細比較
 
-### 安裝依賴
+### 📱 響應式設計
+- 使用 Tailwind CSS 和 Shadcn/ui 組件
+- 完全響應式設計，支援桌面和行動裝置
+- 美觀的漸層背景和現代化 UI
+
+## 頁面結構
+
+### 首頁 (/)
+- 平台介紹和主要功能說明
+- 快速進入情境選擇頁面的入口
+
+### 情境選擇頁 (/scenarios)
+- **第一層**：五大消費分類選擇
+- **第二層**：具體消費場景選擇
+- 麵包屑導航和返回按鈕
+
+### 結果頁 (/results)
+- 根據選擇的場景顯示推薦的信用卡和電子支付方案
+- 顯示回饋率、特色功能、用戶評分
+- 支援多種排序方式
+
+## 技術規格
+
+- **框架**: Next.js 16.0.1 with App Router
+- **語言**: TypeScript
+- **樣式**: Tailwind CSS 4.0
+- **UI 組件**: Shadcn/ui
+- **圖標**: Lucide React
+- **部署**: 支援 Vercel、Netlify 等平台
+
+## 快速開始
 
 ```bash
+# 安裝依賴
 npm install
-```
 
-### 開發模式
-
-```bash
+# 啟動開發伺服器
 npm run dev
-```
 
-在瀏覽器中打開 [http://localhost:3000](http://localhost:3000) 查看結果。
-
-### 構建生產版本
-
-```bash
+# 建置生產版本
 npm run build
+
+# 啟動生產伺服器
 npm start
 ```
 
-## 🛠️ 可用腳本
+## 消費場景
 
-- `npm run dev` - 啟動開發服務器
-- `npm run build` - 構建生產版本
-- `npm run start` - 啟動生產服務器
-- `npm run lint` - 運行 ESLint
-- `npm run lint:fix` - 自動修復 ESLint 錯誤
-- `npm run format` - 格式化代碼
-- `npm run format:check` - 檢查代碼格式
+### 🇯🇵 日本旅遊
+- ANA 全日空、JAL 日本航空
+- JR Pass / Suica（交通票券）
+- 日本三越、日本高島屋（百貨）
+- Bic Camera（電器）
 
-## 📁 專案結構
+### 🇰🇷 韓國旅遊
+- 韓亞航空
+- 樂天免稅店、新世界百貨、現代百貨
+- Olive Young（美妝）
+- T-money（首爾地鐵卡）
 
+### 📱 訂閱服務
+- Netflix、YouTube Premium、Disney+
+- Spotify（音樂串流）
+- iCloud / Apple One
+- ChatGPT Plus
+
+### 🏪 零售商店
+- 全聯、家樂福（超市）
+- 全家、7-Eleven（便利商店）
+- Costco（倉儲賣場）
+- 美廉社
+
+### 💻 網購平台
+- momo 購物網、PChome 24h
+- 蝦皮 Shopee
+- 淘寶、Amazon JP
+- Pinkoi（設計購物）
+
+## 開發說明
+
+### 專案結構
 ```
 src/
-  app/                 # App Router 頁面
-    demo/             # Shadcn/ui 元件演示頁面
-      page.tsx
-    layout.tsx         # 根佈局
-    page.tsx          # 首頁
-    globals.css       # 全局樣式
-  components/         # 可重用元件
-    ui/               # Shadcn/ui 元件
-      button.tsx      # 按鈕元件
-      card.tsx        # 卡片元件
-      badge.tsx       # 徽章元件
-      avatar.tsx      # 頭像元件
-      input.tsx       # 輸入框元件
-  lib/               # 工具函數
-    utils.ts          # 通用工具 (含 cn 函數)
-public/              # 靜態文件
-components.json      # Shadcn/ui 配置文件
+├── app/
+│   ├── page.tsx          # 首頁
+│   ├── scenarios/
+│   │   └── page.tsx      # 情境選擇頁
+│   └── results/
+│       └── page.tsx      # 結果顯示頁
+├── components/
+│   └── ui/               # Shadcn/ui 組件
+└── lib/
+    └── utils.ts          # 工具函數
 ```
 
-## 🎨 功能特色
+### 參數傳遞
+結果頁面接收以下 URL 參數：
+- `category`: 消費分類
+- `merchant`: 商家代碼
+- `country`: 國家代碼
+- `channel`: 通路類型
+- `epay`: 電子支付類型
 
-- ⚡ 基於 Next.js 14 的快速性能
-- 🎨 使用 Tailwind CSS 和 Shadcn/ui 的現代設計
-- 🔧 完整的 TypeScript 支援
-- 📱 響應式設計
-- 🌙 深色模式支援
-- 🛠️ 預配置的開發工具
-- 🧩 豐富的可重用元件庫
+## 注意事項
 
-## 📦 Shadcn/ui 元件
+- 所有回饋率和推薦結果僅供參考
+- 實際優惠條件以各銀行公告為準
+- 建議使用前確認個人消費習慣和需求
 
-已安裝的元件：
-- Button - 多種樣式和尺寸的按鈕
-- Card - 內容容器卡片
-- Badge - 標籤和徽章
-- Avatar - 用戶頭像
-- Input - 表單輸入框
+## 授權
 
-添加更多元件：
-```bash
-npx shadcn@latest add [component-name]
-```
-
-查看所有可用元件：[Shadcn/ui Components](https://ui.shadcn.com/docs/components)
-
-## 🚀 部署
-
-這個應用可以輕鬆部署到 [Vercel](https://vercel.com/)：
-
-1. 將代碼推送到 GitHub
-2. 在 Vercel 中導入專案
-3. 自動部署完成
-
-## 📚 學習資源
-
-- [Next.js 文檔](https://nextjs.org/docs) - 學習 Next.js 功能和 API
-- [Tailwind CSS](https://tailwindcss.com/docs) - 學習 Tailwind CSS
-- [TypeScript](https://www.typescriptlang.org/docs/) - 學習 TypeScript
+MIT License
