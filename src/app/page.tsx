@@ -22,7 +22,7 @@ export default function Home() {
         {/* 按鈕區域 */}
         <div className="flex flex-col gap-3 w-full mb-10">
           <Button size="lg" asChild className="bg-green-600 hover:bg-green-700 w-full">
-            <a href="/scenarios">開始尋找信用卡</a>
+            <a href="/scenarios">開始尋找最優方式</a>
           </Button>
           <Button size="lg" asChild variant="outline" className="border-green-600 text-green-700 hover:bg-green-50 w-full">
             <a href="/payment">管理支付方式</a>

@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { ChevronLeft, ArrowRight } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { ChevronLeft, ArrowRight, Sparkles } from 'lucide-react'
 
 // 定義分類和細節項目的數據結構
 const scenarioData = {
@@ -180,6 +181,8 @@ export default function ScenariosPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedItem, setSelectedItem] = useState<number | null>(null)
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState<number | null>(null)
+  const [customScenario, setCustomScenario] = useState<string>('')
+  const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false)
 
   const categories = Object.keys(scenarioData)
 
@@ -207,6 +210,38 @@ export default function ScenariosPage() {
       const searchParams = new URLSearchParams(item.params as any)
       router.push(`/results?${searchParams.toString()}`)
     }
+  }
+
+  const handleCustomScenarioSubmit = async () => {
+    if (!customScenario.trim()) return
+    
+    setIsAnalyzing(true)
+    
+    // 模擬 AI 分析過程（2秒延遲）
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    
+    // 簡單的關鍵字匹配邏輯（模擬 AI 分析）
+    const scenario = customScenario.toLowerCase()
+    let params: any = {}
+    
+    // 根據關鍵字判斷情境
+    if (scenario.includes('全聯') || scenario.includes('超市') || scenario.includes('買菜')) {
+      params = { category: 'retail', merchant: 'pxmart', country: 'tw', channel: 'supermarket' }
+    } else if (scenario.includes('日本') || scenario.includes('東京') || scenario.includes('大阪')) {
+      params = { category: 'travel', merchant: 'ana', country: 'jp', channel: 'airline' }
+    } else if (scenario.includes('netflix') || scenario.includes('影片') || scenario.includes('看劇')) {
+      params = { category: 'subscription', merchant: 'netflix', channel: 'streaming' }
+    } else if (scenario.includes('momo') || scenario.includes('網購') || scenario.includes('購物')) {
+      params = { category: 'ecommerce', merchant: 'momo', country: 'tw', epay: 'momo_pay' }
+    } else if (scenario.includes('便利商店') || scenario.includes('7-11') || scenario.includes('全家')) {
+      params = { category: 'retail', merchant: '7eleven', country: 'tw', channel: 'convenience' }
+    } else {
+      // 預設情境
+      params = { category: 'retail', merchant: 'general', country: 'tw' }
+    }
+    
+    const searchParams = new URLSearchParams(params)
+    router.push(`/results?${searchParams.toString()}&scenario=${encodeURIComponent(customScenario)}`)
   }
 
   const handleBackClick = () => {
@@ -333,7 +368,84 @@ export default function ScenariosPage() {
 
         {/* 主要內容區域 */}
         <div>
+
           {selectedCategory ? renderItemGrid() : renderCategoryGrid()}
+
+          {/* 分隔線 */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px bg-gray-200"></div>
+            <span className="text-xs text-gray-500">或...</span>
+            <div className="flex-1 h-px bg-gray-200"></div>
+          </div>
+
+          {/* AI 情境輸入框 */}
+          <Card className="mb-6 border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2 mb-1">
+                <Sparkles className="w-5 h-5 text-green-600" />
+                <CardTitle className="text-base">AI 智能推薦</CardTitle>
+              </div>
+              <CardDescription className="text-xs">
+                告訴我你的消費情境，AI 幫你找出最佳方案
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="relative">
+                <Input
+                  placeholder="例如：我想去全聯買菜"
+                  value={customScenario}
+                  onChange={(e) => setCustomScenario(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && customScenario.trim()) {
+                      handleCustomScenarioSubmit()
+                    }
+                  }}
+                  className="pr-10 border-green-300 focus-visible:border-green-500 focus-visible:ring-green-500/50"
+                  disabled={isAnalyzing}
+                />
+                {customScenario && (
+                  <button
+                    onClick={() => setCustomScenario('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+              <Button
+                onClick={handleCustomScenarioSubmit}
+                disabled={!customScenario.trim() || isAnalyzing}
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-300 disabled:to-gray-300"
+              >
+                {isAnalyzing ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    AI 分析中...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    開始分析
+                  </>
+                )}
+              </Button>
+              
+              {/* 示例提示 */}
+              <div className="flex flex-wrap gap-2 pt-1">
+                <span className="text-xs text-gray-500">試試看：</span>
+                {['我想去全聯買菜', '日本旅遊', '看 Netflix'].map((example) => (
+                  <button
+                    key={example}
+                    onClick={() => setCustomScenario(example)}
+                    className="text-xs px-2 py-1 rounded-full bg-white border border-green-200 text-green-700 hover:bg-green-50 transition-colors"
+                    disabled={isAnalyzing}
+                  >
+                    {example}
+                  </button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
